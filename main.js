@@ -1,8 +1,13 @@
+ objects=[];
+ status ="";
+ function preload(){
+     
+ }
  function setup(){
         canvas=createCanvas(480, 380);
         canvas.center();
         video = createCapture(VIDEO);
-        video.size(380,380);
+        video.size(480,380);
         video.hide();
     } 
     function start(){
@@ -14,7 +19,7 @@
         console.log("model loaded");
         status=true;
     }
-    function gotResult(error, result){
+    function gotResult(error, results){
         if (error){
             console.log(error);
         }
@@ -24,16 +29,17 @@
     function draw(){
         image(video, 0, 0, 380, 380);
 if(status != "") {
+  objectDetector.detect(video, gotResult);
     for(var i=0; i < objects.length; i++){
-        document.getElementById("status").inn = "Status : Objects detected";
-        fill("#FF0000");
+        document.getElementById("status").innerHTML = "Status : Objects detected";
+        fill("yellow");
         percent = floor(objects[i].confidence * 100 );
         text(objects[i].label + "" + percent + "%", objects[i].x +15, objects[i].y + 15);
         noFill();
         stroke("#FF0000");
         rect(objects[i].x, objects[i].y, objects[i].width, objects[i].height);
 
-        if(objects[i].label == object+_name)
+        if(objects[i].label == object_name)
         {
             video.stop();
             objectDetector.detect(gotResult);
